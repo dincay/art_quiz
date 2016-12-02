@@ -4,10 +4,10 @@ class ExamplePanel(wx.Panel):
         wx.Panel.__init__(self, parent)
 
         # sizers
-        #main sizer
-        mainSizer = wx.BoxSizer(wx.HORIZONTAL)
-        #vertical sizer
-        ver_grid = wx.GridBagSizer(hgap=1, vgap=6)
+        mainSizer = wx.GridBagSizer(hgap=2, vgap=6) #main sizer
+        ver_grid = wx.GridBagSizer() #vertical left-menu sizer
+        choice_grid = wx.GridBagSizer(hgap=2, vgap=2) #choice sizer
+
 
         # game title
         self.quotename = wx.StaticText(self, label="Dincay Akcoren")
@@ -39,8 +39,28 @@ class ExamplePanel(wx.Panel):
         self.logger = wx.TextCtrl(self, size=(160,200), style=wx.TE_MULTILINE | wx.TE_READONLY)
         ver_grid.Add(self.logger, pos=(5,0), span=(1,2))
         
+        
+        #choice buttons
+        self.buttonA =wx.Button(self, label="A- ")
+        choice_grid.Add(self.buttonA, pos=(0,0))
+        self.Bind(wx.EVT_BUTTON, self.OnChoice,self.buttonA)
+        
+        self.buttonB =wx.Button(self, label="B- ")
+        choice_grid.Add(self.buttonB, pos=(0,1))
+        self.Bind(wx.EVT_BUTTON, self.OnChoice,self.buttonB)
+        
+        self.buttonC =wx.Button(self, label="C- ")
+        choice_grid.Add(self.buttonC, pos=(1,0))
+        self.Bind(wx.EVT_BUTTON, self.OnChoice,self.buttonC)
+        
+        self.buttonD =wx.Button(self, label="D- ")
+        choice_grid.Add(self.buttonD, pos=(1,1))
+        self.Bind(wx.EVT_BUTTON, self.OnChoice,self.buttonD)
+        
+        
         #main sizer
-        mainSizer.Add(ver_grid, 0, wx.ALL, 5)
+        mainSizer.Add(ver_grid, pos=(0,0), span=(2,1))
+        mainSizer.Add(choice_grid, pos=(1,1))
         self.SetSizerAndFit(mainSizer)
         
 
@@ -56,11 +76,13 @@ class ExamplePanel(wx.Panel):
     def EvtChar(self, event):
         self.logger.AppendText('EvtChar: %d\n' % event.GetKeyCode())
         event.Skip()
+    def OnChoice(self,event):
+        self.logger.AppendText(" Choice Id %d\n" %event.GetId())
 
 
 app = wx.App(False)
-frame = wx.Frame(None)
+frame = wx.Frame(None, wx.ID_ANY, "Painting Quiz") #wx.Frame(Parent, Id, Title)
 panel = ExamplePanel(frame)
-frame.Show()
+frame.Show(True) 
 app.MainLoop()
 del(app)
