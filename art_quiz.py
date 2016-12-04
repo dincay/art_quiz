@@ -1,8 +1,12 @@
 import wx
-class ExamplePanel(wx.Panel):
-    def __init__(self, parent):
-        wx.Panel.__init__(self, parent)
-
+class TopGUI(wx.Frame):
+    def __init__(self, *args, **kwargs):
+        super(TopGUI, self).__init__(*args, **kwargs)
+        self.InitGUI()
+        
+    def InitGUI(self):     
+        
+        
         # sizers
         mainSizer = wx.GridBagSizer(hgap=20, vgap=20) #main sizer
         ver_grid = wx.GridBagSizer(hgap=20, vgap=20) #vertical left-menu sizer
@@ -90,8 +94,13 @@ class ExamplePanel(wx.Panel):
                       flag=wx.ALIGN_BOTTOM|wx.ALIGN_CENTER_HORIZONTAL)
         self.SetSizerAndFit(mainSizer)
         
-        self.Bind(wx.EVT_CLOSE, self.OnCloseWindow)
+        #panel to close the application with ESC key
+        pnl = wx.Panel(self)        
+        pnl.SetFocus()
+        pnl.Bind(wx.EVT_KEY_DOWN, self.OnCloseWindow)
         
+        self.SetSize((400, 600))
+        self.Show(True)
 
     #call events
     def EvtRadioBox1(self, event):
@@ -117,7 +126,6 @@ class ExamplePanel(wx.Panel):
             self.ButtonF.Show()
             self.ButtonG.Show()
             self.ButtonH.Show()
-            
     def EvtComboBox(self, event):
         self.logger.AppendText('EvtComboBox: %s\n' % event.GetString())
     def OnClick(self,event):
@@ -128,16 +136,24 @@ class ExamplePanel(wx.Panel):
         self.logger.AppendText(" Choice Id %d\n" %event.GetId())
         dummyfunc(event.GetId())
     def OnCloseWindow(self,event):
-        print('Exiting')
-        self.Destroy()
-
+        key = event.GetKeyCode() 
+        if key == wx.WXK_ESCAPE:
+            ret = wx.MessageBox('Are you sure to quit?', 'Question', 
+                                       wx.YES_NO | wx.NO_DEFAULT, self)
+            if ret == wx.YES:
+                print('Escape char!')
+                self.Close()
+                
+                
 def dummyfunc(x):
     ss = "Dummy func " + str(x)
     print ss
 
-app = wx.App(False)
-frame = wx.Frame(None, wx.ID_ANY, "Painting Quiz", size=(400, 600)) #wx.Frame(Parent, Id, Title)
-panel = ExamplePanel(frame)
-frame.Show(True) 
-app.MainLoop()
-del(app)
+def main():
+    app = wx.App(False)
+    TopGUI(None, wx.ID_ANY, "Painting Quiz") #wx.Frame(Parent, Id, Title)     
+    app.MainLoop()
+    del(app)
+
+if __name__ == '__main__':
+    main()  
