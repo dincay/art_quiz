@@ -6,6 +6,8 @@ class TopGUI(wx.Frame):
         
     def InitGUI(self):     
         
+        #create master panel        
+        pnl = wx.Panel(self)          
         
         # sizers
         mainSizer = wx.GridBagSizer(hgap=20, vgap=20) #main sizer
@@ -23,13 +25,13 @@ class TopGUI(wx.Frame):
         self.quotetitle.SetFont(titlefont)
         
         # number of questions
-        self.lblques = wx.StaticText(self, label="# of question: ")
-        ver_grid.Add(self.lblques, pos=(2,0))
-        self.sampleList = ['10', '20', '30']
-        self.editques = wx.ComboBox(self, size=(60, -1), choices=self.sampleList, style=wx.CB_DROPDOWN)
-        ver_grid.Add(self.editques, pos=(2,1))
-        self.Bind(wx.EVT_COMBOBOX, self.EvtComboBox, self.editques)
-        self.Bind(wx.EVT_TEXT, self.EvtText,self.editques)
+        lblques = wx.StaticText(self, label="# of question: ")
+        ver_grid.Add(lblques, pos=(2,0))
+        sampleList = ['10', '20', '30']
+        editques = wx.ComboBox(self, size=(60, -1), choices=sampleList, style=wx.CB_DROPDOWN|wx.CB_READONLY)
+        ver_grid.Add(editques, pos=(2,1))
+        editques.Bind(wx.EVT_COMBOBOX, self.EvtComboBox)
+        editques.Bind(wx.EVT_TEXT, self.EvtText)
         
         # game type
         radioList1 = ['Guess the Painter', 'Guess the Painting']
@@ -54,37 +56,37 @@ class TopGUI(wx.Frame):
         
         
         #choice buttons
-        self.buttonA =wx.Button(self, label="A- ")
+        self.buttonA = wx.ToggleButton(self, label="A- ")
         choice_grid.Add(self.buttonA, pos=(0,0))
-        self.Bind(wx.EVT_BUTTON, self.OnChoice,self.buttonA)
+        self.buttonA.Bind(wx.EVT_TOGGLEBUTTON, self.OnChoice)
         
-        self.buttonB =wx.Button(self, label="B- ")
+        self.buttonB = wx.ToggleButton(self, label="B- ")
         choice_grid.Add(self.buttonB, pos=(0,1))
-        self.Bind(wx.EVT_BUTTON, self.OnChoice,self.buttonB)
+        self.buttonB.Bind(wx.EVT_TOGGLEBUTTON, self.OnChoice)
         
-        self.buttonC =wx.Button(self, label="C- ")
+        self.buttonC = wx.ToggleButton(self, label="C- ")
         choice_grid.Add(self.buttonC, pos=(1,0))
-        self.Bind(wx.EVT_BUTTON, self.OnChoice,self.buttonC)
+        self.buttonC.Bind(wx.EVT_TOGGLEBUTTON, self.OnChoice)
         
-        self.buttonD =wx.Button(self, label="D- ")
+        self.buttonD = wx.ToggleButton(self, label="D- ")
         choice_grid.Add(self.buttonD, pos=(1,1))
-        self.Bind(wx.EVT_BUTTON, self.OnChoice,self.buttonD)
+        self.buttonD.Bind(wx.EVT_TOGGLEBUTTON, self.OnChoice)
         
-        self.buttonE =wx.Button(self, label="E- ")
+        self.buttonE = wx.ToggleButton(self, label="E- ")
         choice_grid.Add(self.buttonE, pos=(2,0))
-        self.Bind(wx.EVT_BUTTON, self.OnChoice,self.buttonE)
+        self.buttonE.Bind(wx.EVT_TOGGLEBUTTON, self.OnChoice)
         
-        self.buttonF =wx.Button(self, label="F- ")
+        self.buttonF = wx.ToggleButton(self, label="F- ")
         choice_grid.Add(self.buttonF, pos=(2,1))
-        self.Bind(wx.EVT_BUTTON, self.OnChoice,self.buttonF)
+        self.buttonF.Bind(wx.EVT_TOGGLEBUTTON, self.OnChoice)
         
-        self.buttonG =wx.Button(self, label="G- ")
+        self.buttonG = wx.ToggleButton(self, label="G- ")
         choice_grid.Add(self.buttonG, pos=(3,0))
-        self.Bind(wx.EVT_BUTTON, self.OnChoice,self.buttonG)
+        self.buttonG.Bind(wx.EVT_TOGGLEBUTTON, self.OnChoice)
         
-        self.buttonH =wx.Button(self, label="H- ")
+        self.buttonH = wx.ToggleButton(self, label="H- ")
         choice_grid.Add(self.buttonH, pos=(3,1))
-        self.Bind(wx.EVT_BUTTON, self.OnChoice,self.buttonH)
+        self.buttonH.Bind(wx.EVT_TOGGLEBUTTON, self.OnChoice)
         
         
         #main sizer
@@ -95,9 +97,9 @@ class TopGUI(wx.Frame):
         self.SetSizerAndFit(mainSizer)
         
         #panel to close the application with ESC key
-        pnl = wx.Panel(self)        
-        pnl.SetFocus()
-        pnl.Bind(wx.EVT_KEY_DOWN, self.OnCloseWindow)
+              
+        #pnl.SetFocus()
+        self.Bind(wx.EVT_KEY_DOWN, self.OnCloseWindow)
         
         self.SetSize((400, 600))
         self.Show(True)
@@ -109,23 +111,24 @@ class TopGUI(wx.Frame):
         self.logger.AppendText('EvtRadioBox2: %d\n' % event.GetInt())
         if(event.GetInt() == 0):    #4 choices
             print('4 choices')
-            #self.buttonE.Show(False)
-            #self.ButtonF.Show(False)
-            #self.ButtonG.Show(False)
-            #self.ButtonH.Show(False)
             self.quotename.SetLabel('4 choi')
+            self.buttonE.Hide()
+            self.buttonF.Hide()
+            self.buttonG.Hide()
+            self.buttonH.Hide()
+            #self.quotename.SetLabel('4 choi')
         elif(event.GetInt() == 1):    #6 choices
             print('6 choices')
-            self.ButtonE.Show()
-            self.ButtonF.Show()
-            self.ButtonG.Hide()
-            self.ButtonH.Hide()
+            self.buttonE.Show()
+            self.buttonF.Show()
+            self.buttonG.Hide()
+            self.buttonH.Hide()
         elif(event.GetInt() == 2):    #8 choices
             print('8 choices')
-            self.ButtonE.Show()
-            self.ButtonF.Show()
-            self.ButtonG.Show()
-            self.ButtonH.Show()
+            self.buttonE.Show()
+            self.buttonF.Show()
+            self.buttonG.Show()
+            self.buttonH.Show()
     def EvtComboBox(self, event):
         self.logger.AppendText('EvtComboBox: %s\n' % event.GetString())
     def OnClick(self,event):
@@ -133,7 +136,13 @@ class TopGUI(wx.Frame):
     def EvtText(self, event):
         self.logger.AppendText('EvtText: %s\n' % event.GetString())
     def OnChoice(self,event):
-        self.logger.AppendText(" Choice Id %d\n" %event.GetId())
+        obj = event.GetEventObject()
+        isPressed = obj.GetValue()
+        if isPressed:
+            self.logger.AppendText("Pressed, Id %d\n" %event.GetId())
+        else:
+            self.logger.AppendText("De-Pressed, Id %d\n" %event.GetId())
+        
         dummyfunc(event.GetId())
     def OnCloseWindow(self,event):
         key = event.GetKeyCode() 
@@ -144,7 +153,7 @@ class TopGUI(wx.Frame):
                 print('Escape char!')
                 self.Close()
                 
-                
+
 def dummyfunc(x):
     ss = "Dummy func " + str(x)
     print ss
