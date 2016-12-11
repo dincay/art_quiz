@@ -28,20 +28,23 @@ class TopGUI(wx.Frame):
         lblques = wx.StaticText(self, label="# of question: ")
         ver_grid.Add(lblques, pos=(2,0))
         sampleList = ['10', '20', '30']
-        editques = wx.ComboBox(self, size=(60, -1), choices=sampleList, style=wx.CB_DROPDOWN|wx.CB_READONLY)
+        editques = wx.ComboBox(self, size=(60, -1), choices=sampleList, 
+                               style=wx.CB_DROPDOWN|wx.CB_READONLY)
         ver_grid.Add(editques, pos=(2,1))
         editques.Bind(wx.EVT_COMBOBOX, self.EvtComboBox)
         editques.Bind(wx.EVT_TEXT, self.EvtText)
         
         # game type
         radioList1 = ['Guess the Painter', 'Guess the Painting']
-        gametype = wx.RadioBox(self, label="Game Type", choices=radioList1, majorDimension=1, style=wx.RA_SPECIFY_COLS)
+        gametype = wx.RadioBox(self, label="Game Type", choices=radioList1, 
+                               majorDimension=1, style=wx.RA_SPECIFY_COLS)
         ver_grid.Add(gametype, pos=(3,0), span=(1,2))
         self.Bind(wx.EVT_RADIOBOX, self.EvtRadioBox1, gametype)
         
         # number of choices
         radioList2 = ['4', '6', '8']
-        numcho = wx.RadioBox(self, label="Number of Choices", choices=radioList2, majorDimension=3, style=wx.RA_SPECIFY_COLS)
+        numcho = wx.RadioBox(self, label="Number of Choices", choices=radioList2, 
+                             majorDimension=3, style=wx.RA_SPECIFY_COLS)
         ver_grid.Add(numcho, pos=(4,0), span=(1,2))
         self.Bind(wx.EVT_RADIOBOX, self.EvtRadioBox2, numcho)
         
@@ -51,7 +54,8 @@ class TopGUI(wx.Frame):
         self.Bind(wx.EVT_BUTTON, self.OnClick,self.startbutton)
         
         # logger
-        self.logger = wx.TextCtrl(self, size=(160,200), style=wx.TE_MULTILINE | wx.TE_READONLY)
+        self.logger = wx.TextCtrl(self, size=(160,200), 
+                                  style=wx.TE_MULTILINE | wx.TE_READONLY)
         ver_grid.Add(self.logger, pos=(6,0), span=(1,2))
         
         
@@ -74,7 +78,7 @@ class TopGUI(wx.Frame):
         
         self.buttonE = wx.ToggleButton(self, label="E- ")
         choice_grid.Add(self.buttonE, pos=(2,0))
-        self.buttonE.Bind(wx.EVT_TOGGLEBUTTON, self.OnChoice)
+        self.buttonE.Bind(wx.EVT_TOGGLEBUTTON, self.OnChoice)     
         
         self.buttonF = wx.ToggleButton(self, label="F- ")
         choice_grid.Add(self.buttonF, pos=(2,1))
@@ -88,21 +92,34 @@ class TopGUI(wx.Frame):
         choice_grid.Add(self.buttonH, pos=(3,1))
         self.buttonH.Bind(wx.EVT_TOGGLEBUTTON, self.OnChoice)
         
+        #display picture        
+        image = wx.Image('image/0001.jpg', wx.BITMAP_TYPE_ANY)
+        #imageSize = image.GetSize()
+        image.Rescale(800, 600)
+        self.imageBitmap = wx.StaticBitmap(self, -1, 
+                                           wx.BitmapFromImage(image))
         
         #main sizer
         mainSizer.Add(ver_grid, pos=(0,0), span=(2,1),
                       flag=wx.ALIGN_RIGHT|wx.ALL, border=10)
         mainSizer.Add(choice_grid, pos=(1,1),
                       flag=wx.ALIGN_BOTTOM|wx.ALIGN_CENTER_HORIZONTAL)
+        mainSizer.Add(self.imageBitmap, pos=(0,1))
         self.SetSizerAndFit(mainSizer)
         
         #panel to close the application with ESC key
+
               
         #pnl.SetFocus()
         self.Bind(wx.EVT_KEY_DOWN, self.OnCloseWindow)
         
         self.SetSize((400, 600))
         self.Show(True)
+        
+        self.buttonE.Hide() #default is 4 choices
+        self.buttonF.Hide() #default is 4 choices
+        self.buttonG.Hide() #default is 4 choices
+        self.buttonH.Hide() #default is 4 choices
 
     #call events
     def EvtRadioBox1(self, event):
@@ -111,18 +128,22 @@ class TopGUI(wx.Frame):
         self.logger.AppendText('EvtRadioBox2: %d\n' % event.GetInt())
         if(event.GetInt() == 0):    #4 choices
             print('4 choices')
-            self.quotename.SetLabel('4 choi')
             self.buttonE.Hide()
             self.buttonF.Hide()
             self.buttonG.Hide()
             self.buttonH.Hide()
-            #self.quotename.SetLabel('4 choi')
+            image = wx.Image('image/0002.jpg', wx.BITMAP_TYPE_ANY)
+            image.Rescale(800, 600)
+            self.imageBitmap.SetBitmap(wx.BitmapFromImage(image))
         elif(event.GetInt() == 1):    #6 choices
             print('6 choices')
             self.buttonE.Show()
             self.buttonF.Show()
             self.buttonG.Hide()
             self.buttonH.Hide()
+            image = wx.Image('image/0001.jpg', wx.BITMAP_TYPE_ANY)
+            image.Rescale(800, 600)
+            self.imageBitmap.SetBitmap(wx.BitmapFromImage(image))
         elif(event.GetInt() == 2):    #8 choices
             print('8 choices')
             self.buttonE.Show()
@@ -142,7 +163,6 @@ class TopGUI(wx.Frame):
             self.logger.AppendText("Pressed, Id %d\n" %event.GetId())
         else:
             self.logger.AppendText("De-Pressed, Id %d\n" %event.GetId())
-        
         dummyfunc(event.GetId())
     def OnCloseWindow(self,event):
         key = event.GetKeyCode() 
