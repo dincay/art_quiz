@@ -1,0 +1,10 @@
+0001	Sandro Boticelli	Primavera
+0002	Johannes Vermeer	Girl with a Pearl Earring
+0003	Rembrant	The Nightwatch
+0004	Caravaggio	Judith Beheading Holofernes
+0005	Claude Monet	Impression Sunrise
+0006	Claude Monet	The Luncheon
+0007	Pierre-Auguste Renoir	Dance at Le Moulin de la Galette
+0008	Edouard Manet	The Luncheon on the Grass
+0009	Edouard Manet	A Bar at the Folies-Bergere
+0010	Gustave Courbet	A Burial at Ornans
