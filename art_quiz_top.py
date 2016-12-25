@@ -91,30 +91,23 @@ class TopGUI(wx.Frame):
            
         #choice buttons
         butDefSize = (250,30) #tuple width,heigth
-        self.buttonA = wx.ToggleButton(self, label="A- ", name="0", size=butDefSize)
+        self.buttonA = wx.ToggleButton(self, label="A) ", name="0", size=butDefSize)
         choice_grid.Add(self.buttonA, pos=(0,0))
-        #self.buttonA.Bind(wx.EVT_TOGGLEBUTTON, self.OnChoice)
-        self.buttonB = wx.ToggleButton(self, label="B- ", name="1", size=butDefSize)
+        self.buttonB = wx.ToggleButton(self, label="B) ", name="1", size=butDefSize)
         choice_grid.Add(self.buttonB, pos=(0,1))
-        #self.buttonB.Bind(wx.EVT_TOGGLEBUTTON, self.OnChoice)
-        self.buttonC = wx.ToggleButton(self, label="C- ", name="2", size=butDefSize)
+        self.buttonC = wx.ToggleButton(self, label="C) ", name="2", size=butDefSize)
         choice_grid.Add(self.buttonC, pos=(1,0))
-        #self.buttonC.Bind(wx.EVT_TOGGLEBUTTON, self.OnChoice)
-        self.buttonD = wx.ToggleButton(self, label="D- ", name="3", size=butDefSize)
+        self.buttonD = wx.ToggleButton(self, label="D) ", name="3", size=butDefSize)
         choice_grid.Add(self.buttonD, pos=(1,1))
-        #self.buttonD.Bind(wx.EVT_TOGGLEBUTTON, self.OnChoice)
-        self.buttonE = wx.ToggleButton(self, label="E- ", name="4", size=butDefSize)
-        choice_grid.Add(self.buttonE, pos=(2,0))
-        #self.buttonE.Bind(wx.EVT_TOGGLEBUTTON, self.OnChoice)     
-        self.buttonF = wx.ToggleButton(self, label="F- ", name="5", size=butDefSize)
+        self.buttonE = wx.ToggleButton(self, label="E) ", name="4", size=butDefSize)
+        choice_grid.Add(self.buttonE, pos=(2,0))  
+        self.buttonF = wx.ToggleButton(self, label="F) ", name="5", size=butDefSize)
         choice_grid.Add(self.buttonF, pos=(2,1))
-        #self.buttonF.Bind(wx.EVT_TOGGLEBUTTON, self.OnChoice)
-        self.buttonG = wx.ToggleButton(self, label="G- ", name="6", size=butDefSize)
+        self.buttonG = wx.ToggleButton(self, label="G) ", name="6", size=butDefSize)
         choice_grid.Add(self.buttonG, pos=(3,0))
-        #self.buttonG.Bind(wx.EVT_TOGGLEBUTTON, self.OnChoice)
-        self.buttonH = wx.ToggleButton(self, label="H- ", name="7", size=butDefSize)
+        self.buttonH = wx.ToggleButton(self, label="H) ", name="7", size=butDefSize)
         choice_grid.Add(self.buttonH, pos=(3,1))
-        #self.buttonH.Bind(wx.EVT_TOGGLEBUTTON, self.OnChoice)
+        self.allButtonsDisable()
               
         #display picture        
         image = wx.Image('image/0000.jpg', wx.BITMAP_TYPE_ANY)
@@ -146,7 +139,8 @@ class TopGUI(wx.Frame):
         self.buttonH.Hide() #default is 4 choices
 
 
-    #helper functions
+
+    #helper functions - These are used to increase code readability
     def allButtonsSetValue(self,val):
         self.buttonA.SetValue(val)
         self.buttonB.SetValue(val)
@@ -183,7 +177,7 @@ class TopGUI(wx.Frame):
         self.buttonF.Unbind(wx.EVT_TOGGLEBUTTON)
         self.buttonG.Unbind(wx.EVT_TOGGLEBUTTON)
         self.buttonH.Unbind(wx.EVT_TOGGLEBUTTON)
-    def allButtonsSetBackgroundColour(color)
+    def allButtonsSetBackgroundColour(self, color):
         self.buttonA.SetBackgroundColour(color)
         self.buttonB.SetBackgroundColour(color)
         self.buttonC.SetBackgroundColour(color)
@@ -191,10 +185,19 @@ class TopGUI(wx.Frame):
         self.buttonE.SetBackgroundColour(color)
         self.buttonF.SetBackgroundColour(color)
         self.buttonG.SetBackgroundColour(color)
-        self.buttonH.SetBackgroundColour(color) 
+        self.buttonH.SetBackgroundColour(color)
+    def allButtonsDeInitLabel(self):
+        self.buttonA.SetLabel(LETTER[0])
+        self.buttonB.SetLabel(LETTER[1])
+        self.buttonC.SetLabel(LETTER[2])
+        self.buttonD.SetLabel(LETTER[3])
+        self.buttonE.SetLabel(LETTER[4])
+        self.buttonF.SetLabel(LETTER[5])
+        self.buttonG.SetLabel(LETTER[6])
+        self.buttonH.SetLabel(LETTER[7])
 
 
-    #call events
+    #call events that change quiz parameters
     def EvtGameType(self, event):
         global GAME_TYPE
         if event.GetInt() == 0:
@@ -203,7 +206,6 @@ class TopGUI(wx.Frame):
             gametypestr = 'Painting'
         self.logger.AppendText('Game Type: %s\n' %gametypestr)
         GAME_TYPE = event.GetInt()
-        
     def EvtNumOfChoices(self, event):
         global NUM_OF_CHOICES
         obj = event.GetEventObject()
@@ -223,8 +225,7 @@ class TopGUI(wx.Frame):
             self.buttonE.Show()
             self.buttonF.Show()
             self.buttonG.Show()
-            self.buttonH.Show()
-            
+            self.buttonH.Show()   
     def EvtNumOfQuestions(self, event):
         global MAX_QUES
         MAX_QUES = int(event.GetString())
@@ -240,7 +241,7 @@ class TopGUI(wx.Frame):
         #initially mark question as corect at first attempt
         CORRECT_AT_1ST_ATTEMPT = 1
         #print("---Starting initializeQuestion()")
-        self.logger.AppendText('Question %d\n' %ACTIVE_QUES)
+        self.logger.AppendText('Q%d ' %ACTIVE_QUES)
         #select paint number and get correct answer
         paint_no = int(random()*MAX_NUM) +1 #database starts from 1
         corr_ans = dbd[paint_no][GAME_TYPE]
@@ -280,8 +281,9 @@ class TopGUI(wx.Frame):
             self.buttonG.SetLabel(LETTER[6]+choice_array[6])
             self.buttonH.SetLabel(LETTER[7]+choice_array[7])        
         #update buttons   
-        self.allButtonsEnable(self)
-        self.allButtonsUnbind(self)
+        self.allButtonsEnable()
+        self.allButtonsUnbind()
+        #assign correct bindings
         if corr_choice==0:
             self.buttonA.Bind(wx.EVT_TOGGLEBUTTON, self.CorrectChoice)
         else:
@@ -317,7 +319,8 @@ class TopGUI(wx.Frame):
         #print("---Exiting initializeQuestion()")
         return 
 
-
+    #event binded to correct choice button
+    #it updates the score and perform end-of-quiz processes
     def CorrectChoice(self,event):
         global ACTIVE_QUES
         global SCORE
@@ -326,35 +329,13 @@ class TopGUI(wx.Frame):
         #print("Correct Choice")
         if CORRECT_AT_1ST_ATTEMPT == 1:
             SCORE = SCORE + 1
-            self.logger.AppendText("Correct in 1st try!\n")
-            self.logger.AppendText("Current score= %d/%d\n" %(SCORE,ACTIVE_QUES))
-        obj = event.GetEventObject()
-        buttonName = obj.GetName()
-        if buttonName == '0':
-            self.buttonA.SetBackgroundColour(self.correctColor)
-        elif buttonName == '1':
-            self.buttonB.SetBackgroundColour(self.correctColor)
-        elif buttonName == '2':
-            self.buttonC.SetBackgroundColour(self.correctColor)
-        elif buttonName == '3':
-            self.buttonD.SetBackgroundColour(self.correctColor)
-        elif buttonName == '4':
-            self.buttonE.SetBackgroundColour(self.correctColor)
-        elif buttonName == '5':
-            self.buttonF.SetBackgroundColour(self.correctColor)
-        elif buttonName == '6':
-            self.buttonG.SetBackgroundColour(self.correctColor)
-        elif buttonName == '7':
-            self.buttonH.SetBackgroundColour(self.correctColor)
-        else:
-            print("Button Name not Defined! UNEXPECTED ERROR!!!")
+            #self.logger.AppendText("Correct in 1st try!\n")
+        self.logger.AppendText("Score= %d/%d\n" %(SCORE,ACTIVE_QUES))
         time.sleep(1)   #wait 1 secound to let user digest correct answer
         #unselect and uncolor all buttons
-        self.allButtonsSetValue(self,False)
+        self.allButtonsSetValue(False)
         self.allButtonsSetBackgroundColour(self.defaultColor)
-        
-        #if quiz ended
-        if ACTIVE_QUES == MAX_QUES:
+        if ACTIVE_QUES == MAX_QUES: #if quiz ended
             #print("Quiz Ended!!!")
             self.logger.AppendText("Quiz Ended!!!\n")
             self.logger.AppendText("Final Score= %d/%d\n" %(SCORE,MAX_QUES))
@@ -366,29 +347,24 @@ class TopGUI(wx.Frame):
             #self.gametype.Enable()
             #self.numcho.Enable()
             #deinit buttons
-            self.allButtonsSetValue(self,False)
-            self.allButtonsDisable(self)
-            
-            self.buttonA.SetLabel(LETTER[0])
-            self.buttonB.SetLabel(LETTER[1])
-            self.buttonC.SetLabel(LETTER[2])
-            self.buttonD.SetLabel(LETTER[3])
-            self.buttonE.SetLabel(LETTER[4])
-            self.buttonF.SetLabel(LETTER[5])
-            self.buttonG.SetLabel(LETTER[6])
-            self.buttonH.SetLabel(LETTER[7])
-            
-            
-        else:
-            ACTIVE_QUES = ACTIVE_QUES+1
-            self.initializeQuestion()
+            self.allButtonsSetValue(False)
+            self.allButtonsDisable()
+            self.allButtonsDeInitLabel()            
+        else: #if quiz not ended but only a question is answered    
+            ACTIVE_QUES = ACTIVE_QUES+1 #increment active question
+            self.initializeQuestion()   #init a new question
 
 
+    #event binded to wrong choice buttons
+    #it updates the wrong button (red background and disable)
     def WrongChoice(self,event):
         #print("Wrong Choice")
         global CORRECT_AT_1ST_ATTEMPT
-        #mark this question won't be counted as correct
+        #mark this question won't be counted as correct at 1st attempt
+        #since a wrong answer is given.
         CORRECT_AT_1ST_ATTEMPT = 0 
+        #change the background of selected wrong choice to red and disable
+        #it to prevent reselection
         obj = event.GetEventObject()
         buttonName = obj.GetName()
         if buttonName == '0':
@@ -419,52 +395,37 @@ class TopGUI(wx.Frame):
             print("Button Name not Defined! UNEXPECTED ERROR!!!")
 
         
-    #when Start button is pressed    
+    #event binded to start button
     def OnStart(self,event):
         global ACTIVE_QUES
         global SCORE
-        #reset score
+        #reset globals
         SCORE = 0
+        ACTIVE_QUES = 1
         #disable left menu items
         self.startbutton.Disable()
         #self.editques.Disable()
         #self.gametype.Disable()
         #self.numcho.Disable()
         #enable all buttons
-        self.buttonA.Enable()
-        self.buttonB.Enable()
-        self.buttonC.Enable()
-        self.buttonD.Enable()
-        self.buttonE.Enable()
-        self.buttonF.Enable()
-        self.buttonG.Enable()
-        self.buttonH.Enable()
-        
+        self.allButtonsEnable()
         self.logger.AppendText("Quiz is starting!!!\n")
+        #process database 
         self.logger.AppendText("Processing database\n")
         processDatabase()
         self.logger.AppendText("Database processed\n")
+        #print quiz parameters
         self.logger.AppendText("Quiz is started with %d questions\n" %MAX_QUES)
         if GAME_TYPE == 0:
             gametypestr = 'Painter'
         else:
             gametypestr = 'Painting'
         self.logger.AppendText("Quiz type is 'Find the %s'\n" %gametypestr)
-        ACTIVE_QUES = 1
+        #initialize first question
         self.initializeQuestion()
        
             
-    #when a choice is made    
-    def OnChoice(self,event):
-        obj = event.GetEventObject()
-        isPressed = obj.GetValue()
-        if isPressed:
-            self.logger.AppendText("Pressed, Name %s\n" %obj.GetName())
-        else:
-            self.logger.AppendText("De-Pressed, Name %s\n" %obj.GetName())
-    
-
-        
+    #not working yet    
     def OnCloseWindow(self,event):
         key = event.GetKeyCode() 
         if key == wx.WXK_ESCAPE:
@@ -474,15 +435,6 @@ class TopGUI(wx.Frame):
                 print('Escape char!')
                 self.Close()
 
-    def allButtonsSetValue(self,val):
-        self.buttonA.SetValue(val)
-        self.buttonB.SetValue(val)
-        self.buttonC.SetValue(val)
-        self.buttonD.SetValue(val)
-        self.buttonE.SetValue(val)
-        self.buttonF.SetValue(val)
-        self.buttonG.SetValue(val)
-        self.buttonH.SetValue(val)
     
 #function to process the question database as the beginngin of the program.
 #returns a dictionary 
