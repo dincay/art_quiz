@@ -8,3 +8,22 @@
 0008	Edouard Manet	The Luncheon on the Grass
 0009	Edouard Manet	A Bar at the Folies-Bergere
 0010	Gustave Courbet	A Burial at Ornans
+0011	Masaccio	Virgin and Child with Saint Anne
+0012	Masaccio	The Tribute Money
+0013	Masaccio	Madonna and Child
+0014	Masaccio	San Giovenale Triptych
+0015	Masaccio	Holy Trinity
+0016	Andrea Mantegna	St. Sebastian
+0017	Andrea Mantegna	Judith and Holofernes
+0018	Andrea Mantegna	Lamentation of Christ
+0019	Andrea Mantegna	Agony in the Garden
+0020	Andrea Mantegna	Adoration of the Magi
+0021	Andrea Mantegna	Madonna della Vittoria
+0022	Michelangelo	Last Judgement
+0023	Michelangelo	The Creation of Adam
+0024	Michelangelo	The Conversion of Saul
+0025	Michelangelo	Doni Tondo
+0026	Fra Bartolomeo	Madonna in Glory with Saints
+0027	Fra Bartolomeo	Pieta
+0028	Fra Bartolomeo	Holy Family with the Infant St John
+0029	Fra Bartolomeo	Christ with the Four Evangelists
