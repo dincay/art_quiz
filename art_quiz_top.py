@@ -1,6 +1,5 @@
 # art quiz top (core+GUI)
 
-
 import time
 import random
 import wx
